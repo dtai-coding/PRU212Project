@@ -13,7 +13,9 @@ right mouse click : cycle through bounce ammount (0, 1, 2)
 	abilities:
 wall slide
 wall jump (need to time correctly)
-time freeze while dash(instant charge bow to max charge for one shot while slow time)
+Slow time
+dash (only when Slow time)
+Instant full Charge next arrow (only when Slow time)
 
 	game mechanics:
 
