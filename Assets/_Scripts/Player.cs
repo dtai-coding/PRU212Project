@@ -151,13 +151,28 @@ public class Player : MonoBehaviour
     }
     private void CheckMovementDirection()
     {
-        if (isFaceRight && movementInputDirection < 0)
+        if (!isCharging)
         {
-            Flip();
+            if (isFaceRight && movementInputDirection < 0)
+            {
+                Flip();
+            }
+            else if (!isFaceRight && movementInputDirection > 0)
+            {
+                Flip();
+            }
         }
-        else if (!isFaceRight && movementInputDirection > 0)
+        else
         {
-            Flip();
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (mousePosition.x < transform.position.x && isFaceRight)
+            {
+                Flip();
+            }
+            else if (mousePosition.x > transform.position.x && !isFaceRight)
+            {
+                Flip();
+            }
         }
 
         const float velocityThreshold = 0.01f;
@@ -171,19 +186,49 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CheckDash()
+    private void CheckJump()
     {
-        if (isCharging)
+        if (jumpTimer > 0)
         {
-            return; // Don't allow dashing if charging an arrow
+            if (!isGrounded && isTouchingWall && movementInputDirection != 0 && movementInputDirection != facingDirection)
+            { WallHop(); }
+            else if (isGrounded)
+            { NormalJump(); }
         }
 
+        if (isAttemptingToJump)
+        {
+            jumpTimer -= Time.deltaTime;
+        }
+
+        if (wallJumpTimer > 0)
+        {
+            if (hasWallJumped && movementInputDirection == -lastWallJumpDirection)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0.0f);
+                hasWallJumped = false;
+            }
+            else if (wallJumpTimer <= 0)
+            {
+                hasWallJumped = false;
+            }
+            else
+            {
+                wallJumpTimer -= Time.deltaTime;
+            }
+        }
+    }
+
+
+    public void CheckDash()
+    {
         timeSlowCooldownTimer -= Time.deltaTime;
         if (timeSlowCooldownTimer <= 0)
         {
             timeSlowCooldownTimer = 0;
         }
     }
+
     public void CheckCharge()
     {
         if (isCharging)
@@ -191,9 +236,8 @@ public class Player : MonoBehaviour
             canMove = false;
             if (isGrounded)
             {
-                rb.velocity = Vector2.zero; // Stop moving if grounded
+                rb.velocity = new Vector2(0, rb.velocity.y); // Stop moving if grounded
             }
-            FlipToMouse();
             if (isTimeSlow)
             {
                 chargeTime = chargeTimeSet;
@@ -204,6 +248,20 @@ public class Player : MonoBehaviour
                 chargeTime = Mathf.Min(chargeTime, chargeTimeSet);
             }
 
+            // Allow slowTimer to decrease even when charging
+            if (isTimeSlow && slowTimer > 0)
+            {
+                slowTimer += Time.deltaTime;
+                if (slowTimer >= slowTimerSet)
+                {
+                    isTimeSlow = false;
+                    Time.timeScale = 1f;
+                    pointer.SetActive(false);
+                    FireArrow();
+                    slowTimer = 0f;
+                    timeSlowCooldownTimer = timeSlowCoolDown;
+                }
+            }
         }
     }
 
@@ -260,7 +318,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpHeight);
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && timeSlowCooldownTimer == 0)
+        if (Input.GetKey(KeyCode.LeftShift) && timeSlowCooldownTimer == 0 && !isCharging)
         {
             if (slowTimer < slowTimerSet)
             {
@@ -294,9 +352,21 @@ public class Player : MonoBehaviour
         {
             isTimeSlow = false;
             if (isCharging)
-            { FireArrow(); }
+            {
+                Time.timeScale = 1f;
+                pointer.SetActive(false);
+                FireArrow();
+                slowTimer = 0f;
+                timeSlowCooldownTimer = timeSlowCoolDown;
+            }
             else
-            { StartCoroutine(Dash()); }
+            {
+                Time.timeScale = 1f;
+                pointer.SetActive(false);
+                StartCoroutine(Dash());
+                slowTimer = 0f;
+                timeSlowCooldownTimer = timeSlowCoolDown;
+            }
         }
 
         if (Input.GetMouseButtonDown(0) && !isWallSliding && !isDashing)
@@ -330,28 +400,27 @@ public class Player : MonoBehaviour
     public void FireArrow()
     {
         canMove = true;
-        Quaternion correctedRotation = Quaternion.Euler(pointer.transform.eulerAngles.x, pointer.transform.eulerAngles.y, pointer.transform.eulerAngles.z + 45);
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mousePosition - (Vector2)firePoint.position).normalized;
+        Quaternion correctedRotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 45);
         Arrow arrow = ArrowPool.Instance.GetArrow();
         if (arrow != null)
         {
             arrow.transform.position = firePoint.position;
             arrow.transform.rotation = correctedRotation;
-            Vector2 direction = correctedRotation * Vector2.right;
             arrow.rb.velocity = direction * chargeTime * chargePower;
             arrow.bounceCount = bounceCount;
             Debug.Log("Arrow fired. Arrow bounce count: " + arrow.bounceCount);
         }
         isCharging = false;
-    }
-
-
-    public void FlipToMouse()
-    {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (mousePosition.x < transform.position.x && isFaceRight)
-        { Flip(); }
-        else if (mousePosition.x > transform.position.x && !isFaceRight)
-        { Flip(); }
+        if (isTimeSlow)
+        {
+            isTimeSlow = false;
+            Time.timeScale = 1f;
+            pointer.SetActive(false);
+            slowTimer = 0f;
+            timeSlowCooldownTimer = timeSlowCoolDown;
+        }
     }
 
     public void TimeSlow()
@@ -384,51 +453,12 @@ public class Player : MonoBehaviour
         isDashing = false;
     }
 
-
-
     public void PointerDirection()
     {
-        Vector2 pointerPosition = pointer.transform.position;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mousePosition - pointerPosition;
+        Vector2 direction = mousePosition - (Vector2)pointer.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        angle -= 45f;
-        pointer.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-    }
-
-
-
-    private void CheckJump()
-    {
-        if (jumpTimer > 0)
-        {
-            if (!isGrounded && isTouchingWall && movementInputDirection != 0 && movementInputDirection != facingDirection)
-            {WallHop();}
-            else if (isGrounded)
-            { NormalJump();}
-        }
-
-        if (isAttemptingToJump)
-        {
-            jumpTimer -= Time.deltaTime;
-        }
-
-        if (wallJumpTimer > 0)
-        {
-            if (hasWallJumped && movementInputDirection == -lastWallJumpDirection)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, 0.0f);
-                hasWallJumped = false;
-            }
-            else if (wallJumpTimer <= 0)
-            {
-                hasWallJumped = false;
-            }
-            else
-            {
-                wallJumpTimer -= Time.deltaTime;
-            }
-        }
+        pointer.transform.rotation = Quaternion.Euler(0f, 0f, angle - 45f);
     }
 
     private void NormalJump()
@@ -492,7 +522,6 @@ public class Player : MonoBehaviour
             isFaceRight = !isFaceRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
-
     }
 
     private void OnDrawGizmos()
