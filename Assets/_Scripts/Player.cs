@@ -425,7 +425,7 @@ public class Player : MonoBehaviour
 
     public void TimeSlow()
     {
-        Time.timeScale = 0.5f;
+        Time.timeScale = 0.3f;
         pointer.SetActive(true);
     }
 
