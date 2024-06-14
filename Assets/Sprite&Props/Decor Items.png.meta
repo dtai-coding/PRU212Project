@@ -139,7 +139,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,8 +176,8 @@ TextureImporter:
       name: OpenDoor
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
+        x: 170
+        y: 180
         width: 16
         height: 32
       alignment: 9
@@ -197,8 +197,8 @@ TextureImporter:
       name: ClosedDoor
       rect:
         serializedVersion: 2
-        x: 144
-        y: 192
+        x: 202
+        y: 194
         width: 16
         height: 32
       alignment: 9

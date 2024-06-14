@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -43,6 +44,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 238851609
+    locked: 0
+  - name: Door
+    uniqueID: 3641694341
     locked: 0
   - name: Platform
     uniqueID: 291795911
