@@ -4,20 +4,21 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Door
+  - Enemy
+  - Arrow
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Arrow
   - Water
   - UI
-  - ground
-  - Arrow
-  - Foreground
-  - Decor
+  - Platform
+  - foreground
+  - background
   - player
-  - Background
+  - decor
+  - Enemy
   - 
   - 
   - 
@@ -42,21 +43,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
-    uniqueID: 238851609
+  - name: background
+    uniqueID: 2522758165
     locked: 0
-  - name: Door
-    uniqueID: 3641694341
+  - name: decor
+    uniqueID: 2197565937
     locked: 0
-  - name: Platform
-    uniqueID: 291795911
+  - name: platform
+    uniqueID: 992818707
     locked: 0
-  - name: Decor
-    uniqueID: 1174118937
+  - name: Player
+    uniqueID: 189608703
     locked: 0
-  - name: player
-    uniqueID: 756448133
-    locked: 0
-  - name: foreground
-    uniqueID: 1652077327
+  - name: foregorund
+    uniqueID: 26288127
     locked: 0

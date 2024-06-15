@@ -12,7 +12,6 @@ public class Arrow : MonoBehaviour
         StartCoroutine(DisableAfterTime(ArrowPool.Instance.arrowLifeTime));
         rb.gravityScale = 1;
         hasHit = false;
-        Debug.Log("Arrow enabled. Arrow bounce count: " + bounceCount);
     }
 
     IEnumerator DisableAfterTime(float delay)
@@ -28,13 +27,27 @@ public class Arrow : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        bounceCount--;
-        Debug.Log("Arrow collided. Arrow bounce count after collision: " + bounceCount);
-        if (bounceCount <= 0)
+        // Check if the collided game object's layer is "Enemy"
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            hasHit = true;
-            rb.velocity = Vector2.zero;
-            rb.gravityScale = 0;
+            // Try to get the EnemyController component from the parent of enemy1
+            EnemyController enemy = collision.transform.parent.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(1); // Assuming each arrow deals 1 damage
+                Debug.Log("Arrow collided with enemy");
+            }
+            ArrowPool.Instance.ReturnToPool(this);
+        }
+        else
+        {
+            bounceCount--;
+            if (bounceCount <= 0)
+            {
+                hasHit = true;
+                rb.velocity = Vector2.zero;
+                rb.gravityScale = 0;
+            }
         }
     }
 

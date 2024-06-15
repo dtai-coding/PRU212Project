@@ -6,70 +6,84 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float movementInputDirection;
-    private float jumpTimer = 0f;
-    private float turnTimer = 0f;
-    private float wallJumpTimer = 0f;
-    private float slowTimer = 0f;
-    private float timeSlowCooldownTimer = 0f;
-    private float chargeTime = 0f;
+    private float
+        movementInputDirection,
+        jumpTimer = 0f,
+        turnTimer = 0f,
+        wallJumpTimer = 0f,
+        slowTimer = 0f,
+        timeSlowCooldownTimer = 0f,
+        chargeTime = 0f;
 
-    private int facingDirection = 1;
-    private int lastWallJumpDirection;
-    private int currentBounceIndex = 0;
-
-
-    private bool isFaceRight = true;
-    private bool isWalking;
-    private bool isGrounded;
-    private bool isTouchingWall;
-    private bool isWallSliding;
-    private bool canNormalJump = true;
-    private bool canWallJump;
-    private bool isAttemptingToJump;
-    private bool checkJumpMultiplier;
-    private bool canMove;
-    private bool canFlip;
-    private bool hasWallJumped;
-    private bool isDashing;
-    private bool isCharging = false;
-    private bool isTimeSlow = false;
+    private int
+        facingDirection = 1,
+        lastWallJumpDirection,
+        currentBounceIndex = 0;
 
 
-    public float Speed = 10.0f;
-    public float JumpForce = 16.0f;
-    public float groundCheckRadius = 0.35f;
-    public float wallCheckDistance = 0.5f;
-    public float wallSlideSpeed = 2f;
-    public float airMoveForce = 50f;
-    public float airDragMultiplier = 0.95f;
-    public float variableJumpHeight = 0.5f;
-    public float wallJumpForce = 20f;
-    public float jumpTimerSet = 0.15f;
-    public float turnTimerSet = 0.1f;
-    public float wallJumpTimerSet = 0.5f;
-    public float slowTimerSet = 1f;
-    public float timeSlowCoolDown = 5f;
-    public float dashDistance = 25f;
-    public float dashDuration = 0.2f;
-    public float chargePower = 30f;
-    public float chargeTimeSet = 2f;
+    private bool
+        isFaceRight = true,
+        isWalking,
+        isGrounded,
+        isTouchingWall,
+        isWallSliding,
+        canNormalJump = true,
+        canWallJump,
+        isAttemptingToJump,
+        checkJumpMultiplier,
+        canMove,
+        canFlip,
+        hasWallJumped,
+        isDashing,
+        isCharging = false,
+        isTimeSlow = false,
+        isDead = false;
+
+    public float
+        Speed = 10.0f,
+        JumpForce = 16.0f,
+        groundCheckRadius = 0.35f,
+        wallCheckDistance = 0.5f,
+        wallSlideSpeed = 2f,
+        airMoveForce = 50f,
+        airDragMultiplier = 0.95f,
+        variableJumpHeight = 0.5f,
+        wallJumpForce = 20f,
+        jumpTimerSet = 0.15f,
+        turnTimerSet = 0.1f,
+        wallJumpTimerSet = 0.5f,
+        slowTimerSet = 1f,
+        timeSlowCoolDown = 5f,
+        dashDistance = 25f,
+        dashDuration = 0.2f,
+        chargePower = 30f,
+        chargeTimeSet = 2f,
+        respawnDelay = 3f;
 
     public int[] bounceAmounts = new int[] { 1, 2, 3 };
-    public int bounceCount;
+    public int
+        deathCount = 0,
+        bounceCount;
 
     public static Player Instance { get; private set; }
 
     public Vector2 wallHopDirection = new Vector2(1f, 0.5f);
     public Vector2 wallJumpDirection = new Vector2(1f, 2f);
+    private Vector2 revivePoint;
 
-    public GameObject arrowPrefab;
-    public GameObject pointer;
+
+    public GameObject
+        arrowPrefab,
+        pointer;
+
     private Rigidbody2D rb;
     private Animator anim;
-    public Transform groundCheck;
-    public Transform wallCheck;
-    public Transform firePoint;
+    private Collider2D playerCollider;
+
+    public Transform
+        groundCheck,
+        wallCheck,
+        firePoint;
 
     public LayerMask whatIsGround;
 
@@ -82,20 +96,20 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        playerCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         wallHopDirection.Normalize();
         wallJumpDirection.Normalize();
         pointer = GameObject.Find("Pointer");
         pointer.SetActive(false);
+
     }
 
     void Update()
     {
-        if (isDashing)
-        {
-            return;
-        }
+        if (isDashing) { return; }
+        if (isDead) { return; }
 
         CheckInput();
         CheckMovementDirection();
@@ -110,13 +124,14 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDashing)
-        {
-            return;
-        }
+        if (isDashing) { return; }
+        if (isDead) { return; }
+
         ApplyMovement();
         CheckSurrounding();
     }
+
+
 
     private void CheckIfWallSlide()
     {
@@ -236,7 +251,7 @@ public class Player : MonoBehaviour
             canMove = false;
             if (isGrounded)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y); // Stop moving if grounded
+                rb.velocity = new Vector2(0, 0); // Stop moving if grounded
             }
             if (isTimeSlow)
             {
@@ -264,6 +279,8 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+
 
 
     private void UpdateAnim()
@@ -340,7 +357,7 @@ public class Player : MonoBehaviour
                 else
                 {
                     Time.timeScale = 1f;
-                    pointer.SetActive(false); 
+                    pointer.SetActive(false);
                     StartCoroutine(Dash());
                     slowTimer = 0f;
                     timeSlowCooldownTimer = timeSlowCoolDown;
@@ -376,7 +393,7 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetMouseButtonUp(0) && isCharging)
-        { 
+        {
             FireArrow();
             if (isTimeSlow)
             {
@@ -511,6 +528,60 @@ public class Player : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, -wallSlideSpeed);
             }
+        }
+    }
+
+    public void SetRevivePoint(Vector2 newRevivePoint)
+    {
+        revivePoint = newRevivePoint;
+    }
+
+    private void Die()
+    {
+        if (!isDead)
+        {
+            isDead = true;
+            canMove = false;
+            playerCollider.enabled = false;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.color = Color.red;
+
+            deathCount++;
+            if (deathCount >= 3)
+            {
+                GameOver();
+            }
+            else
+            {
+                Invoke(nameof(Respawn), respawnDelay);
+            }
+        }
+    }
+
+    private void Respawn()
+    {
+        transform.position = revivePoint;
+        isDead = false;
+        canMove = true;
+        playerCollider.enabled = true;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over");
+    }
+
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || collision.gameObject.tag == "Enemy")
+        {
+            Die(); // Player will take damage and die from one hit by any collider with an "Enemy" layer or tag
+            Debug.Log("Player collided with enemy");
         }
     }
 
