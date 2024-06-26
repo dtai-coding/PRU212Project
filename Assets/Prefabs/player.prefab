@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 5144486860736124873}
   - component: {fileID: 7202056258335648145}
   - component: {fileID: 2513398841747636324}
+  - component: {fileID: 3244120386482128611}
   m_Layer: 9
   m_Name: player
   m_TagString: Player
@@ -301,7 +302,7 @@ MonoBehaviour:
   chargeTimeSet: 2
   respawnDelay: 3
   bounceAmounts: 010000000200000003000000
-  deathCount: 0
+  deathCount: 3
   bounceCount: 0
   wallHopDirection: {x: 1, y: 0.5}
   wallJumpDirection: {x: 1, y: 2}
@@ -313,6 +314,21 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &3244120386482128611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517546874325033874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9c1a6a7cbebad4891fb0ad74f95661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathCount: {fileID: 0}
+  totalHealthBar: {fileID: 0}
+  currentHealthBar: {fileID: 0}
 --- !u!1 &924241732435744265
 GameObject:
   m_ObjectHideFlags: 0

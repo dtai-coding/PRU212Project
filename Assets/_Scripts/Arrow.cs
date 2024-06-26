@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    public Collider2D arrowCollider;
     public Rigidbody2D rb;
     public int bounceCount;
     private bool hasHit;
@@ -44,6 +45,7 @@ public class Arrow : MonoBehaviour
             bounceCount--;
             if (bounceCount <= 0)
             {
+                arrowCollider.enabled = false;
                 hasHit = true;
                 rb.velocity = Vector2.zero;
                 rb.gravityScale = 0;

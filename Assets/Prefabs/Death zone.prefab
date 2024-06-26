@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5251305774363808101}
   - component: {fileID: 4881675290187946777}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: Death zone
   m_TagString: Enemy
   m_Icon: {fileID: 0}

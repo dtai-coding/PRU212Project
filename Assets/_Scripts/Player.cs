@@ -12,8 +12,7 @@ public class Player : MonoBehaviour
         turnTimer = 0f,
         wallJumpTimer = 0f,
         slowTimer = 0f,
-        timeSlowCooldownTimer = 0f,
-        chargeTime = 0f;
+        timeSlowCooldownTimer = 0f;
 
     private int
         facingDirection = 1,
@@ -58,12 +57,13 @@ public class Player : MonoBehaviour
         dashDuration = 0.2f,
         chargePower = 30f,
         chargeTimeSet = 2f,
-        respawnDelay = 3f;
+        respawnDelay = 3f,
+        deathCount = 3f,
+         chargeTime = 0f;
+
 
     public int[] bounceAmounts = new int[] { 1, 2, 3 };
-    public int
-        deathCount = 0,
-        bounceCount;
+    public int bounceCount;
 
     public static Player Instance { get; private set; }
 
@@ -89,7 +89,6 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Player Awake. Initial bounce count: " + bounceCount);
         Instance = this;
         bounceCount = bounceAmounts[currentBounceIndex];
     }
@@ -103,7 +102,6 @@ public class Player : MonoBehaviour
         wallJumpDirection.Normalize();
         pointer = GameObject.Find("Pointer");
         pointer.SetActive(false);
-
     }
 
     void Update()
@@ -270,8 +268,7 @@ public class Player : MonoBehaviour
                 if (slowTimer >= slowTimerSet)
                 {
                     isTimeSlow = false;
-                    Time.timeScale = 1f;
-                    pointer.SetActive(false);
+                    EndTimeSlow();
                     FireArrow();
                     slowTimer = 0f;
                     timeSlowCooldownTimer = timeSlowCoolDown;
@@ -348,16 +345,14 @@ public class Player : MonoBehaviour
                 isTimeSlow = false;
                 if (isCharging)
                 {
-                    Time.timeScale = 1f;
-                    pointer.SetActive(false);
+                    EndTimeSlow();
                     FireArrow();
                     slowTimer = 0f;
                     timeSlowCooldownTimer = timeSlowCoolDown;
                 }
                 else
                 {
-                    Time.timeScale = 1f;
-                    pointer.SetActive(false);
+                    EndTimeSlow();
                     StartCoroutine(Dash());
                     slowTimer = 0f;
                     timeSlowCooldownTimer = timeSlowCoolDown;
@@ -370,16 +365,14 @@ public class Player : MonoBehaviour
             isTimeSlow = false;
             if (isCharging)
             {
-                Time.timeScale = 1f;
-                pointer.SetActive(false);
+                EndTimeSlow();
                 FireArrow();
                 slowTimer = 0f;
                 timeSlowCooldownTimer = timeSlowCoolDown;
             }
             else
             {
-                Time.timeScale = 1f;
-                pointer.SetActive(false);
+                EndTimeSlow();
                 StartCoroutine(Dash());
                 slowTimer = 0f;
                 timeSlowCooldownTimer = timeSlowCoolDown;
@@ -389,7 +382,6 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !isWallSliding && !isDashing)
         {
             isCharging = true;
-            chargeTime = 0f;
         }
 
         if (Input.GetMouseButtonUp(0) && isCharging)
@@ -398,8 +390,7 @@ public class Player : MonoBehaviour
             if (isTimeSlow)
             {
                 isTimeSlow = false;
-                Time.timeScale = 1f;
-                pointer.SetActive(false);
+                EndTimeSlow();
                 FireArrow();
                 slowTimer = 0f;
                 timeSlowCooldownTimer = timeSlowCoolDown;
@@ -428,13 +419,14 @@ public class Player : MonoBehaviour
             arrow.rb.velocity = direction * chargeTime * chargePower;
             arrow.bounceCount = bounceCount;
             Debug.Log("Arrow fired. Arrow bounce count: " + arrow.bounceCount);
+            chargeTime = 0f;
         }
         isCharging = false;
         if (isTimeSlow)
         {
+            chargeTime = 0f;
             isTimeSlow = false;
-            Time.timeScale = 1f;
-            pointer.SetActive(false);
+            EndTimeSlow();
             slowTimer = 0f;
             timeSlowCooldownTimer = timeSlowCoolDown;
         }
@@ -442,8 +434,13 @@ public class Player : MonoBehaviour
 
     public void TimeSlow()
     {
-        Time.timeScale = 0.3f;
+        Time.timeScale = 0.2f;
         pointer.SetActive(true);
+    }
+    public void EndTimeSlow()
+    {
+        Time.timeScale = 1f;
+        pointer.SetActive(false);
     }
 
 
@@ -456,8 +453,7 @@ public class Player : MonoBehaviour
 
         if (timeSlowCooldownTimer == 0)
         {
-            Time.timeScale = 1f;
-            pointer.SetActive(false);
+            EndTimeSlow();
             isDashing = true;
             float originalGravity = rb.gravityScale;
             rb.gravityScale = 0f;
@@ -540,6 +536,10 @@ public class Player : MonoBehaviour
     {
         if (!isDead)
         {
+            isDashing = false;
+            isCharging = false;
+            isTimeSlow = false;
+            EndTimeSlow();
             isDead = true;
             canMove = false;
             playerCollider.enabled = false;
@@ -547,8 +547,8 @@ public class Player : MonoBehaviour
             SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.color = Color.red;
 
-            deathCount++;
-            if (deathCount >= 3)
+            deathCount--;
+            if (deathCount <= 0)
             {
                 GameOver();
             }

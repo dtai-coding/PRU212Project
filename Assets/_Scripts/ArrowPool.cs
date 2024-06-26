@@ -32,6 +32,7 @@ public class ArrowPool : MonoBehaviour
         {
             Arrow arrow = arrows.Dequeue();
             arrow.gameObject.SetActive(true);
+            arrow.arrowCollider.enabled = true;
             activeArrows.Add(arrow);
             return arrow;
         }
@@ -44,6 +45,7 @@ public class ArrowPool : MonoBehaviour
 
             Arrow newArrow = arrows.Dequeue();
             newArrow.gameObject.SetActive(true);
+            newArrow.arrowCollider.enabled = true;
             activeArrows.Add(newArrow);
             return newArrow;
         }
