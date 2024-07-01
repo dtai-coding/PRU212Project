@@ -39,7 +39,15 @@ public class Arrow : MonoBehaviour
             }
             ArrowPool.Instance.ReturnToPool(this);
         }
-        else
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy2"))
+        {
+            Enemy2Controller enemy2 = collision.transform.parent.GetComponent<Enemy2Controller>();
+            if (enemy2 != null)
+            {
+                enemy2.TakeDamage(1);
+                Debug.Log("Arrow collied with enemy2");
+            }
+        } else
         {
             bounceCount--;
             if (bounceCount <= 0)

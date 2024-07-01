@@ -595,6 +595,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void TakeDamage()
+    {
+        Die();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.clear;
