@@ -3021,6 +3021,53 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!1 &383645933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 383645935}
+  - component: {fileID: 383645934}
+  m_Layer: 10
+  m_Name: GameManager
+  m_TagString: Finish
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &383645934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383645933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec05c96b44bc5c4a86cda2b10aca466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMap: {fileID: 0}
+  start: {fileID: 0}
+  quit: {fileID: 0}
+--- !u!4 &383645935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383645933}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.042140972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &551541546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3190,6 +3237,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2176613234957686395, guid: ad7a9fe85740d0440ba6dbb69801992d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176613234957686395, guid: ad7a9fe85740d0440ba6dbb69801992d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3953904984045086159, guid: ad7a9fe85740d0440ba6dbb69801992d, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3391,7 +3446,7 @@ PrefabInstance:
     - target: {fileID: 4584145225751365203, guid: 516997228a9d5564ebd4809a1d5a8e78, type: 3}
       propertyPath: sceneToLoad
       value: 
-      objectReference: {fileID: 102900000, guid: 5b9dd6c5f66b64e44bec66320d9a4eaa, type: 3}
+      objectReference: {fileID: 102900000, guid: 6e10b0850a765f64190cacfe9fbc9a11, type: 3}
     - target: {fileID: 5076517446308264537, guid: 516997228a9d5564ebd4809a1d5a8e78, type: 3}
       propertyPath: m_SortingLayer
       value: 2
@@ -73041,3 +73096,4 @@ SceneRoots:
   - {fileID: 190145862}
   - {fileID: 551541546}
   - {fileID: 1272110220}
+  - {fileID: 383645935}

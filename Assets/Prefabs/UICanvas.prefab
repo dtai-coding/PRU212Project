@@ -33,7 +33,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -55.40011, y: 14.60042}
+  m_AnchoredPosition: {x: -55.400116, y: 14.600418}
   m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1083188980001203087
@@ -354,7 +354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -55.4, y: 14.6}
+  m_AnchoredPosition: {x: -55.399994, y: 14.599998}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &1638646782193297383
@@ -926,7 +926,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -75.40011, y: 34.600418}
+  m_AnchoredPosition: {x: -75.400116, y: 34.600418}
   m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &7538472500209845018
@@ -1232,6 +1232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1399613618399428258}
   - component: {fileID: 5872795888269935524}
+  - component: {fileID: 7948356330932349606}
   m_Layer: 5
   m_Name: DashTimer
   m_TagString: Untagged
@@ -1312,3 +1313,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7948356330932349606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9174320110379251324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a54f053f3391f4a91692a161c0d281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  slider: {fileID: 5872795888269935524}
+  fillAreaImage: {fileID: 0}
