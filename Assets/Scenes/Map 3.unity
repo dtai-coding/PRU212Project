@@ -3050,7 +3050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec05c96b44bc5c4a86cda2b10aca466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMap: {fileID: 0}
+  startMap: {fileID: 102900000, guid: 295b3f59049b1c54a86cbf47cda201fe, type: 3}
   start: {fileID: 0}
   quit: {fileID: 0}
 --- !u!4 &383645935
