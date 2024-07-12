@@ -49,6 +49,7 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(name);
     }
+
     private void PlayGame()
     {
         SceneManager.LoadScene(startMap.name);

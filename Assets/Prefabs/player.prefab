@@ -295,7 +295,7 @@ MonoBehaviour:
   turnTimerSet: 0.1
   wallJumpTimerSet: 0.5
   slowTimerSet: 1
-  timeSlowCoolDown: 5
+  timeSlowCoolDown: 6
   dashDistance: 25
   dashDuration: 0.2
   chargePower: 30
@@ -303,12 +303,14 @@ MonoBehaviour:
   respawnDelay: 3
   deathCount: 3
   chargeTime: 0
+  timeSlowCooldownTimer: 0
   bounceAmounts: 010000000200000003000000
   bounceCount: 0
   wallHopDirection: {x: 1, y: 0.5}
   wallJumpDirection: {x: 1, y: 2}
   arrowPrefab: {fileID: 7069812865402718336, guid: 9890e2588b024674f80a78f5a962c049, type: 3}
   pointer: {fileID: 87878052686866031}
+  sceneToLoad: {fileID: 102900000, guid: 6e10b0850a765f64190cacfe9fbc9a11, type: 3}
   groundCheck: {fileID: 5052222610009234741}
   wallCheck: {fileID: 6526491836397935213}
   firePoint: {fileID: 2112784221766683276}

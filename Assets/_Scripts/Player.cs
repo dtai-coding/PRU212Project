@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Tilemaps;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -80,8 +81,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Collider2D playerCollider;
+	public SceneAsset sceneToLoad;
 
-    public Transform
+	public Transform
         groundCheck,
         wallCheck,
         firePoint;
@@ -571,8 +573,8 @@ public class Player : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
-    }
+		SceneController.instance.LoadScreen(sceneToLoad.name);
+	}
 
 
     void OnCollisionEnter2D(Collision2D collision)
