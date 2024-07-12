@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
         jumpTimer = 0f,
         turnTimer = 0f,
         wallJumpTimer = 0f,
-        slowTimer = 0f,
-        timeSlowCooldownTimer = 0f;
+        slowTimer = 0f;
+
 
     private int
         facingDirection = 1,
@@ -52,14 +52,15 @@ public class Player : MonoBehaviour
         turnTimerSet = 0.1f,
         wallJumpTimerSet = 0.5f,
         slowTimerSet = 1f,
-        timeSlowCoolDown = 5f,
+        timeSlowCoolDown = 6f,
         dashDistance = 25f,
         dashDuration = 0.2f,
         chargePower = 30f,
         chargeTimeSet = 2f,
         respawnDelay = 3f,
         deathCount = 3f,
-         chargeTime = 0f;
+        chargeTime = 0f,
+        timeSlowCooldownTimer = 0f;
 
 
     public int[] bounceAmounts = new int[] { 1, 2, 3 };
@@ -276,8 +277,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-
 
 
     private void UpdateAnim()
@@ -532,7 +531,7 @@ public class Player : MonoBehaviour
         revivePoint = newRevivePoint;
     }
 
-    private void Die()
+    public void Die()
     {
         if (!isDead)
         {
@@ -578,7 +577,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy2") || collision.gameObject.layer == LayerMask.NameToLayer("DeathZone"))
         {
             Die(); // Player will take damage and die from one hit by any collider with an "Enemy" layer or tag
             Debug.Log("Player collided with enemy");
@@ -594,6 +593,7 @@ public class Player : MonoBehaviour
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
     }
+
 
     private void OnDrawGizmos()
     {

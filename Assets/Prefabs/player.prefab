@@ -301,8 +301,9 @@ MonoBehaviour:
   chargePower: 30
   chargeTimeSet: 2
   respawnDelay: 3
-  bounceAmounts: 010000000200000003000000
   deathCount: 3
+  chargeTime: 0
+  bounceAmounts: 010000000200000003000000
   bounceCount: 0
   wallHopDirection: {x: 1, y: 0.5}
   wallJumpDirection: {x: 1, y: 2}
@@ -326,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9c1a6a7cbebad4891fb0ad74f95661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathCount: {fileID: 0}
+  player: {fileID: 0}
   totalHealthBar: {fileID: 0}
   currentHealthBar: {fileID: 0}
 --- !u!1 &924241732435744265

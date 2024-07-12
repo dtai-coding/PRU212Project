@@ -10,7 +10,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Arrow
+  - 
   - Water
   - UI
   - Platform
@@ -20,9 +20,9 @@ TagManager:
   - decor
   - Enemy
   - DeathZone
-  - 
-  - 
-  - 
+  - Arrow
+  - Enemy2
+  - enemyArrow
   - 
   - 
   - 

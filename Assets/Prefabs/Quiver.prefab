@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497651450221468588}
   - component: {fileID: 2525631081731518636}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Quiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}

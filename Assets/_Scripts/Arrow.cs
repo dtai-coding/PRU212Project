@@ -1,3 +1,4 @@
+using Assets._Scripts.Enemies;
 using System.Collections;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class Arrow : MonoBehaviour
     public Rigidbody2D rb;
     public int bounceCount;
     private bool hasHit;
+
 
     void OnEnable()
     {
@@ -26,7 +28,12 @@ public class Arrow : MonoBehaviour
         ArrowAngle();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+	public void SetInitialVelocity(Vector2 velocity)
+	{
+		rb.velocity = velocity;
+	}
+
+	void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the collided game object's layer is "Enemy"
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
@@ -40,6 +47,30 @@ public class Arrow : MonoBehaviour
             }
             ArrowPool.Instance.ReturnToPool(this);
         }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy2"))
+        {
+            Enemy2Controller enemy2 = collision.transform.parent.GetComponent<Enemy2Controller>();
+            if (enemy2 != null)
+            {
+                enemy2.TakeDamage(1);
+                Debug.Log("Arrow collied with enemy2");
+            }
+			ArrowPool.Instance.ReturnToPool(this);
+		}
+		if (collision.gameObject.layer == LayerMask.NameToLayer("enemyArrow"))
+		{
+			Transform parentTransform = collision.transform.parent;
+			if (parentTransform != null)
+			{
+				ArrowScript enemyArrow = parentTransform.GetComponent<ArrowScript>(); // Line 56
+				if (enemyArrow != null)
+				{
+					enemyArrow.InstanceDestroyArrow();
+					Debug.Log("Arrow collided with enemyArrow");
+				}
+			}
+			ArrowPool.Instance.ReturnToPool(this);
+		}   
         else
         {
             bounceCount--;

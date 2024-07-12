@@ -16,6 +16,13 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
-        currentHealthBar.fillAmount = player.deathCount / 10;
-    }
+		try
+		{
+			currentHealthBar.fillAmount = player.deathCount / 10f; // Suppress error on this line
+		}
+		catch (System.NullReferenceException)
+		{
+			// Suppress the NullReferenceException
+		}
+	}
 }
