@@ -563,6 +563,7 @@ public class Player : MonoBehaviour
     private void Respawn()
     {
         transform.position = revivePoint;
+        timeSlowCooldownTimer = 0;
         isDead = false;
         canMove = true;
         playerCollider.enabled = true;
