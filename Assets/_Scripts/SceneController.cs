@@ -17,11 +17,6 @@ public class SceneController : MonoBehaviour
 
     private bool setShowOption;
 
-    public void Start()
-    {
-        quit.onClick.AddListener(QuitGame);
-        start.onClick.AddListener(PlayGame);
-    }
 
     private void Awake()
     {
@@ -36,11 +31,16 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-    //    option.GameObject.SetActive(setShowOption);
-    //}
-    public void NextLevel()
+	public void Start()
+	{
+		quit.onClick.AddListener(QuitGame);
+		start.onClick.AddListener(PlayGame);
+	}
+	//private void Update()
+	//{
+	//    option.GameObject.SetActive(setShowOption);
+	//}
+	public void NextLevel()
     {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
